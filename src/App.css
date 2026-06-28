@@ -8,34 +8,16 @@
   padding: 2rem 1.25rem 3rem;
   overflow: hidden;
   background:
+    url('./assets/star-motif.svg') no-repeat 10% 14% / min(140px, 22vw),
+    url('./assets/plane-side.svg') no-repeat 86% 20% / min(200px, 32vw),
     radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.12), transparent 40%),
     radial-gradient(circle at 85% 10%, rgba(45, 212, 191, 0.08), transparent 35%),
     linear-gradient(180deg, #0b1220 0%, #101a2e 55%, #0b1220 100%);
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('./assets/plane-icon.svg');
-  background-repeat: no-repeat;
-  background-position: 88% 18%;
-  background-size: min(180px, 28vw);
-  opacity: 0.14;
-  pointer-events: none;
-}
-
+.hero::before,
 .hero::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(96, 165, 250, 0.35),
-    transparent
-  );
+  content: none;
 }
 
 .heroStage {
