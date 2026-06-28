@@ -1,0 +1,54 @@
+.clock {
+  display: block;
+  width: min(100%, 240px);
+  margin: 0 auto;
+  touch-action: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.face {
+  fill: var(--color-input-bg);
+  stroke: var(--color-border);
+  stroke-width: 2;
+}
+
+.innerFace {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.tick {
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+  opacity: 0.45;
+}
+
+.hourLabel,
+.minuteLabel {
+  fill: var(--color-text);
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.hourHand {
+  stroke: var(--color-accent-soft);
+  stroke-width: 4;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.minuteHand {
+  stroke: var(--color-fast);
+  stroke-width: 3;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.centerDot {
+  fill: var(--color-accent);
+  pointer-events: none;
+}

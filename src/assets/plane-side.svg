@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 40" fill="none" aria-hidden="true">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none" aria-hidden="true">
   <path
-    d="M8 20c0-2 2-4 6-4h44c4 0 6 2 6 4s-2 4-6 4H14c-4 0-6-2-6-4z"
+    d="M6 20c0-2 2-4 6-4h36c4 0 6 2 6 4s-2 4-6 4H12c-4 0-6-2-6-4z"
     fill="#60a5fa"
   />
-  <path d="M34 20 42 8h8l-8 12 8 12h-8l-8-12z" fill="#93c5fd" />
-  <path d="M72 20 84 14v12L72 20z" fill="#60a5fa" />
-  <circle cx="16" cy="20" r="3.5" fill="#bfdbfe" />
+  <path d="M28 20 38 4h10l-10 16 10 16H38L28 20z" fill="#93c5fd" />
+  <path d="M76 20 92 13v14L76 20z" fill="#60a5fa" />
+  <circle cx="14" cy="20" r="3.5" fill="#bfdbfe" />
 </svg>
