@@ -17,11 +17,11 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('./assets/plane-motif.svg');
+  background-image: url('./assets/plane-icon.svg');
   background-repeat: no-repeat;
-  background-position: 92% 12%;
-  background-size: min(280px, 40vw);
-  opacity: 0.35;
+  background-position: 88% 18%;
+  background-size: min(180px, 28vw);
+  opacity: 0.14;
   pointer-events: none;
 }
 

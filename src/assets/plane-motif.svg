@@ -1,18 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" fill="none" aria-hidden="true">
-  <path
-    d="M8 42h52l8-10 6 10h18l-4-14 10-4-10-4 4-14H68l-6 10-8-10H8l6 8-6 8z"
-    fill="#60a5fa"
-    opacity="0.9"
-  />
-  <path
-    d="M72 42h148"
-    stroke="#93c5fd"
-    stroke-width="1.5"
-    stroke-dasharray="6 8"
-    opacity="0.5"
-  />
-  <circle cx="220" cy="42" r="2" fill="#2dd4bf" opacity="0.8" />
-  <circle cx="200" cy="30" r="1" fill="#94a3b8" opacity="0.5" />
-  <circle cx="185" cy="52" r="1" fill="#94a3b8" opacity="0.4" />
-  <circle cx="160" cy="24" r="1" fill="#94a3b8" opacity="0.35" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+  <g opacity="0.22" transform="translate(10 20) scale(1.5)">
+    <path
+      d="M32 6 L36 26 L54 30 L36 34 L34 50 L32 58 L30 50 L28 34 L10 30 L28 26 Z"
+      fill="#60a5fa"
+    />
+    <path
+      d="M30 34 L34 34 L33 50 L31 50 Z"
+      fill="#93c5fd"
+    />
+  </g>
 </svg>

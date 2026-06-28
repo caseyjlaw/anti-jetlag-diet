@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import type { AirportInfo } from '../lib/airports'
 import type { TripInput } from '../lib/dietPlan'
 import { AirportAutocomplete } from './AirportAutocomplete'
+import { TimePicker } from './TimePicker'
 import styles from './CalculatorForm.module.css'
 
 export type CalculatorFormValues = TripInput
@@ -98,15 +99,13 @@ export function CalculatorForm({ initialValues, onSubmit }: Props) {
               onChange={(e) => setDepartureDate(e.target.value)}
             />
           </label>
-          <label className={styles.simpleField}>
-            Time
-            <input
-              type="time"
-              required
-              value={departureTime}
-              onChange={(e) => setDepartureTime(e.target.value)}
-            />
-          </label>
+          <TimePicker
+            id="departure-time"
+            label="Time"
+            required
+            value={departureTime}
+            onChange={setDepartureTime}
+          />
         </div>
       </fieldset>
 
@@ -122,15 +121,13 @@ export function CalculatorForm({ initialValues, onSubmit }: Props) {
               onChange={(e) => setArrivalDate(e.target.value)}
             />
           </label>
-          <label className={styles.simpleField}>
-            Time
-            <input
-              type="time"
-              required
-              value={arrivalTime}
-              onChange={(e) => setArrivalTime(e.target.value)}
-            />
-          </label>
+          <TimePicker
+            id="arrival-time"
+            label="Time"
+            required
+            value={arrivalTime}
+            onChange={setArrivalTime}
+          />
         </div>
       </fieldset>
 

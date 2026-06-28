@@ -20,7 +20,7 @@
   width: 2rem;
   height: 2rem;
   flex-shrink: 0;
-  background: url('../assets/plane-motif.svg') center / contain no-repeat;
+  background: url('../assets/plane-icon.svg') center / contain no-repeat;
   filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.35));
 }
 
