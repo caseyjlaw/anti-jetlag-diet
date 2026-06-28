@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CalculatorForm, type CalculatorFormValues } from './components/CalculatorForm'
 import { ContentSections } from './components/ContentSections'
 import { DietCalendar } from './components/DietCalendar'
-import { SourcesFooter } from './components/SourcesFooter'
+import { SiteFooter } from './components/SiteFooter'
 import { formatAirportLabel } from './lib/airports'
 import { computeDietPlan, type DietPlan } from './lib/dietPlan'
 import './App.css'
@@ -68,7 +68,7 @@ function App() {
 
       <main className="content">
         <ContentSections />
-        <SourcesFooter />
+        <SiteFooter />
       </main>
     </div>
   )

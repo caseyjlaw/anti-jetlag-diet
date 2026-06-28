@@ -3,14 +3,44 @@
 }
 
 .hero {
+  position: relative;
   min-height: min(100vh, 920px);
   padding: 2rem 1.25rem 3rem;
+  overflow: hidden;
   background:
-    linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.12), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(45, 212, 191, 0.08), transparent 35%),
+    linear-gradient(180deg, #0b1220 0%, #101a2e 55%, #0b1220 100%);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('./assets/plane-motif.svg');
+  background-repeat: no-repeat;
+  background-position: 92% 12%;
+  background-size: min(280px, 40vw);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(96, 165, 250, 0.35),
+    transparent
+  );
 }
 
 .heroStage {
   position: relative;
+  z-index: 1;
   min-height: 32rem;
 }
 
@@ -53,12 +83,12 @@
 
 .content {
   padding: 0 1.25rem 2rem;
-  background: #fff;
+  background: var(--color-bg);
 }
 
 .formError {
   max-width: 40rem;
   margin: 1rem auto 0;
-  color: #b42318;
+  color: var(--color-error);
   text-align: center;
 }

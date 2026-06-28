@@ -5,8 +5,6 @@ import styles from './DayCell.module.css'
 type Props = {
   day: DietDay
   timezone: string
-  expanded: boolean
-  onToggle: () => void
 }
 
 const kindClass: Record<string, string> = {
@@ -17,7 +15,7 @@ const kindClass: Record<string, string> = {
   'break-fast': styles.eventBreakFast,
 }
 
-export function DayCell({ day, timezone, expanded, onToggle }: Props) {
+export function DayCell({ day, timezone }: Props) {
   const dateLabel = DateTime.fromISO(day.date, { zone: timezone }).toFormat(
     'ccc, MMM d',
   )
@@ -29,30 +27,36 @@ export function DayCell({ day, timezone, expanded, onToggle }: Props) {
         ? styles.fast
         : styles.travel
 
+  const isTravelDay = day.dayType === 'travel'
+
   return (
     <article className={`${styles.cell} ${dayClass}`}>
-      <button
-        type="button"
-        className={styles.header}
-        onClick={onToggle}
-        aria-expanded={expanded}
-      >
+      <div className={styles.header}>
         <span className={styles.date}>{dateLabel}</span>
         <span className={styles.badge}>{day.label}</span>
-      </button>
-      <ul className={expanded ? styles.events : styles.eventsCollapsed}>
-        {day.events.map((event) => (
-          <li
-            key={`${event.kind}-${event.label}`}
-            className={`${styles.event} ${kindClass[event.kind] ?? ''}`}
-          >
-            {event.time && (
-              <span className={styles.time}>{event.time} · </span>
-            )}
-            {event.label}
-          </li>
-        ))}
-      </ul>
+      </div>
+
+      {isTravelDay ? (
+        <ul className={styles.events}>
+          {day.events.map((event) => (
+            <li
+              key={`${event.kind}-${event.label}`}
+              className={`${styles.event} ${kindClass[event.kind] ?? ''}`}
+            >
+              <span>{event.label}</span>
+              {event.timezoneNote && (
+                <span className={styles.tzNote}>
+                  Time zone: {event.timezoneNote}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={`${styles.summary} ${kindClass[day.dayType] ?? ''}`}>
+          {day.events[0]?.label}
+        </p>
+      )}
     </article>
   )
 }

@@ -40,7 +40,8 @@ describe('computeDietPlan', () => {
     expect(plan.direction).toBe('east')
     expect(plan.travelDate).toBe('2026-01-11')
     expect(plan.days).toHaveLength(5)
-    expect(plan.days[0].dayType).toBe('feast')
+    expect(plan.days[0].events).toHaveLength(1)
+    expect(plan.days[0].events[0].label).toContain('Feast')
     expect(plan.days[4].dayType).toBe('travel')
     expect(
       plan.destinationBreakfast.toFormat('yyyy-MM-dd HH:mm'),

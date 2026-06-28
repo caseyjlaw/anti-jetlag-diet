@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { DietPlan } from '../lib/dietPlan'
 import { DayCell } from './DayCell'
 import styles from './DietCalendar.module.css'
@@ -16,10 +15,8 @@ export function DietCalendar({
   arrivalLabel,
   onEdit,
 }: Props) {
-  const [expandedDay, setExpandedDay] = useState<string | null>(
-    plan.travelDate,
-  )
   const originZone = plan.departureLocal.zoneName ?? 'UTC'
+  const destinationTz = `${plan.arrivalLocal.zoneName ?? 'UTC'}`
 
   return (
     <div className={styles.calendar}>
@@ -47,9 +44,11 @@ export function DietCalendar({
           <p className={styles.meta}>
             Break final fast:{' '}
             <strong>
-              {plan.destinationBreakfast.toFormat('ccc, MMM d — h:mm a')}{' '}
-              ({plan.arrivalLocal.zoneName})
-            </strong>
+              {plan.destinationBreakfast.toFormat('ccc, MMM d — h:mm a')}
+            </strong>{' '}
+            <span className={styles.tzHighlight}>
+              destination local time ({destinationTz})
+            </span>
           </p>
           {plan.breakfastNote && (
             <p className={styles.note}>{plan.breakfastNote}</p>
@@ -78,17 +77,7 @@ export function DietCalendar({
 
       <div className={styles.grid}>
         {plan.days.map((day) => (
-          <DayCell
-            key={day.date}
-            day={day}
-            timezone={originZone}
-            expanded={expandedDay === day.date}
-            onToggle={() =>
-              setExpandedDay((current) =>
-                current === day.date ? null : day.date,
-              )
-            }
-          />
+          <DayCell key={day.date} day={day} timezone={originZone} />
         ))}
       </div>
     </div>

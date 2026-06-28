@@ -10,6 +10,18 @@
   margin: 0 0 0.5rem;
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.header h1::before {
+  content: '';
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  background: url('../assets/plane-motif.svg') center / contain no-repeat;
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.35));
 }
 
 .header p {
@@ -28,7 +40,7 @@
   padding: 1rem;
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
-  background: #fff;
+  background: var(--color-card);
 }
 
 .fieldset legend {
@@ -57,11 +69,12 @@
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
   font-size: 1rem;
+  background: var(--color-input-bg);
 }
 
 .error {
   margin: 0;
-  color: #b42318;
+  color: var(--color-error);
   font-size: 0.9rem;
 }
 
@@ -69,15 +82,16 @@
   padding: 0.85rem 1.25rem;
   border: none;
   border-radius: 0.65rem;
-  background: var(--color-navy);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
 }
 
 .submit:hover {
-  background: #1e3354;
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
 }
 
 @media (max-width: 540px) {

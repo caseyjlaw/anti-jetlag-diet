@@ -39,11 +39,3 @@
 .subsection {
   margin-top: 1rem;
 }
-
-.sourceList {
-  padding-left: 1.25rem;
-}
-
-.sourceList a {
-  color: var(--color-accent);
-}

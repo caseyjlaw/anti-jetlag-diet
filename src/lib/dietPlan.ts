@@ -82,23 +82,8 @@ function feastEvents(date: string): DietEvent[] {
   return [
     {
       date,
-      label: 'Feast breakfast — high protein',
-      kind: 'feast',
-    },
-    {
-      date,
-      label: 'Feast lunch — high protein',
-      kind: 'feast',
-    },
-    {
-      date,
-      time: '3–5 PM',
-      label: 'Caffeine allowed (coffee, tea, cola)',
-      kind: 'caffeine',
-    },
-    {
-      date,
-      label: 'Feast dinner — high carbohydrates',
+      label:
+        'Feast — high protein at breakfast and lunch; high carbohydrates at dinner. Caffeine only 3–5 PM.',
       kind: 'feast',
     },
   ]
@@ -108,26 +93,15 @@ function fastEvents(date: string): DietEvent[] {
   return [
     {
       date,
-      label: 'Fast breakfast — light foods',
-      kind: 'fast',
-    },
-    {
-      date,
-      label: 'Fast lunch — light foods (<800 cal/day total)',
-      kind: 'fast',
-    },
-    {
-      date,
-      time: '3–5 PM',
-      label: 'Caffeine allowed (coffee, tea, cola)',
-      kind: 'caffeine',
-    },
-    {
-      date,
-      label: 'Fast dinner — light foods, high carb OK',
+      label:
+        'Fast — light meals, under 800 calories. Caffeine only 3–5 PM.',
       kind: 'fast',
     },
   ]
+}
+
+function formatDestinationTimezone(arrivalAirport: AirportInfo): string {
+  return `${arrivalAirport.iata} local (${arrivalAirport.timezone})`
 }
 
 function travelEvents(
@@ -135,22 +109,20 @@ function travelEvents(
   direction: TravelDirection,
   destinationBreakfast: DateTime,
   arrivalAirport: AirportInfo,
+  originZone: string,
 ): DietEvent[] {
   const caffeineLabel =
     direction === 'west'
-      ? 'Caffeinated drinks in the morning before departure'
-      : 'Caffeinated drinks between 6–11 PM (origin local)'
+      ? `Caffeinated drinks in the morning before departure (${originZone})`
+      : `Caffeinated drinks between 6–11 PM (${originZone})`
 
-  const breakfastLabel = destinationBreakfast.toFormat('ccc, MMM d — h:mm a')
-  const events: DietEvent[] = [
+  const breakfastTime = destinationBreakfast.toFormat('ccc, MMM d — h:mm a')
+  const destinationTz = formatDestinationTimezone(arrivalAirport)
+
+  return [
     {
       date,
-      label: 'Fast breakfast — light foods',
-      kind: 'fast',
-    },
-    {
-      date,
-      label: 'Fast lunch — light foods',
+      label: 'Fast — light meals throughout travel',
       kind: 'fast',
     },
     {
@@ -165,9 +137,9 @@ function travelEvents(
     },
     {
       date,
-      label: `Break final fast — high-protein breakfast at ${breakfastLabel}`,
+      label: `Break final fast — high-protein breakfast at ${breakfastTime}`,
       kind: 'break-fast',
-      timezoneNote: arrivalAirport.timezone,
+      timezoneNote: destinationTz,
     },
     {
       date,
@@ -175,17 +147,16 @@ function travelEvents(
       kind: 'travel',
     },
   ]
-  return events
 }
 
 function dayTypeLabel(dayType: DayType): string {
   switch (dayType) {
     case 'feast':
-      return 'Feast day'
+      return 'Feast'
     case 'fast':
-      return 'Fast day'
+      return 'Fast'
     case 'travel':
-      return 'Travel day (fast)'
+      return 'Travel'
   }
 }
 
@@ -236,6 +207,7 @@ export function computeDietPlan(input: TripInput): DietPlan {
               direction,
               destinationBreakfast,
               input.arrivalAirport,
+              originZone,
             )
 
     return {

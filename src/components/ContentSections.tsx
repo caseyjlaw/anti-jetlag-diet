@@ -1,4 +1,4 @@
-import { dietSections, PRIMARY_SOURCES } from '../content/dietContent'
+import { dietSections } from '../content/dietContent'
 import styles from './ContentSections.module.css'
 
 export function ContentSections() {
@@ -38,19 +38,6 @@ export function ContentSections() {
           ))}
         </section>
       ))}
-
-      <section id="sources" className={styles.section}>
-        <h2>Sources</h2>
-        <ul className={styles.sourceList}>
-          {PRIMARY_SOURCES.map((source) => (
-            <li key={source.url}>
-              <a href={source.url} target="_blank" rel="noreferrer">
-                {source.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
     </div>
   )
 }

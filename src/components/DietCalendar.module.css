@@ -33,8 +33,13 @@
   font-size: 0.95rem;
 }
 
+.tzHighlight {
+  color: var(--color-accent-soft);
+  font-weight: 600;
+}
+
 .note {
-  color: #9a3412;
+  color: var(--color-feast);
 }
 
 .source a {
@@ -46,13 +51,15 @@
   padding: 0.55rem 0.9rem;
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  background: #fff;
+  background: var(--color-card);
+  color: var(--color-text);
   cursor: pointer;
   font-weight: 600;
 }
 
 .editButton:hover {
   background: var(--color-surface);
+  border-color: var(--color-accent);
 }
 
 .grid {
