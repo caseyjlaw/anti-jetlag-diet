@@ -47,6 +47,13 @@ describe('computeDietPlan', () => {
       plan.destinationBreakfast.toFormat('yyyy-MM-dd HH:mm'),
     ).toBe('2026-01-12 07:00')
     expect(plan.days[4].events.some((e) => e.kind === 'break-fast')).toBe(true)
+    const breakFast = plan.days[4].events.find((e) => e.kind === 'break-fast')
+    expect(breakFast?.timezoneNote).toContain('CDG local')
+    expect(breakFast?.timezoneNote).toContain('JFK local')
+    expect(breakFast?.timezoneNote).toContain('Destination:')
+    expect(breakFast?.timezoneNote).toContain('Origin:')
+    expect(breakFast?.timezoneNote).toContain('Jan 12 — 7:00 AM')
+    expect(breakFast?.timezoneNote).toContain('Jan 12 — 1:00 AM')
     expect(
       plan.days[4].events.some((e) =>
         e.label.includes('6–11 PM'),

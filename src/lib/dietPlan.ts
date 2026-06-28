@@ -100,14 +100,27 @@ function fastEvents(date: string): DietEvent[] {
   ]
 }
 
-function formatDestinationTimezone(arrivalAirport: AirportInfo): string {
-  return `${arrivalAirport.iata} local (${arrivalAirport.timezone})`
+export function formatBreakfastInBothZones(
+  destinationBreakfast: DateTime,
+  originZone: string,
+  departureAirport: AirportInfo,
+  arrivalAirport: AirportInfo,
+): { destination: string; origin: string; combined: string } {
+  const originBreakfast = destinationBreakfast.setZone(originZone)
+  const destination = `${destinationBreakfast.toFormat('ccc, MMM d — h:mm a')} (${arrivalAirport.iata} local)`
+  const origin = `${originBreakfast.toFormat('ccc, MMM d — h:mm a')} (${departureAirport.iata} local)`
+  return {
+    destination,
+    origin,
+    combined: `Destination: ${destination} · Origin: ${origin}`,
+  }
 }
 
 function travelEvents(
   date: string,
   direction: TravelDirection,
   destinationBreakfast: DateTime,
+  departureAirport: AirportInfo,
   arrivalAirport: AirportInfo,
   originZone: string,
 ): DietEvent[] {
@@ -116,8 +129,12 @@ function travelEvents(
       ? `Caffeinated drinks in the morning before departure (${originZone})`
       : `Caffeinated drinks between 6–11 PM (${originZone})`
 
-  const breakfastTime = destinationBreakfast.toFormat('ccc, MMM d — h:mm a')
-  const destinationTz = formatDestinationTimezone(arrivalAirport)
+  const breakfastTimes = formatBreakfastInBothZones(
+    destinationBreakfast,
+    originZone,
+    departureAirport,
+    arrivalAirport,
+  )
 
   return [
     {
@@ -137,9 +154,9 @@ function travelEvents(
     },
     {
       date,
-      label: `Break final fast — high-protein breakfast at ${breakfastTime}`,
+      label: 'Break final fast — high-protein breakfast at 07:00 destination local',
       kind: 'break-fast',
-      timezoneNote: destinationTz,
+      timezoneNote: breakfastTimes.combined,
     },
     {
       date,
@@ -206,6 +223,7 @@ export function computeDietPlan(input: TripInput): DietPlan {
               date,
               direction,
               destinationBreakfast,
+              input.departureAirport,
               input.arrivalAirport,
               originZone,
             )

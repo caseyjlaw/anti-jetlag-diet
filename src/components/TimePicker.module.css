@@ -17,7 +17,7 @@
   gap: 0.5rem;
 }
 
-.displayButton {
+.textInput {
   flex: 1;
   min-width: 0;
   padding: 0.65rem 0.75rem;
@@ -26,26 +26,17 @@
   font-size: 1rem;
   background: var(--color-input-bg);
   color: var(--color-text);
-  text-align: left;
-  cursor: pointer;
+  font-variant-numeric: tabular-nums;
 }
 
-.displayButton:hover,
-.displayButton[aria-expanded='true'] {
+.textInput:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
   border-color: var(--color-accent);
-  background: var(--color-card);
 }
 
-.displayEmpty {
+.textInput::placeholder {
   color: var(--color-text-muted);
-}
-
-.hiddenInput {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .clockButton {
@@ -73,16 +64,11 @@
 }
 
 .panel {
-  position: absolute;
-  top: calc(100% + 0.35rem);
-  left: 0;
-  right: 0;
-  z-index: 30;
   padding: 1rem;
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   background: var(--color-card);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
 }
 
 .digitalTime {

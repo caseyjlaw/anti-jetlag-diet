@@ -1,9 +1,12 @@
-import type { DietPlan } from '../lib/dietPlan'
+import { formatBreakfastInBothZones, type DietPlan } from '../lib/dietPlan'
+import type { AirportInfo } from '../lib/airports'
 import { DayCell } from './DayCell'
 import styles from './DietCalendar.module.css'
 
 type Props = {
   plan: DietPlan
+  departureAirport: AirportInfo
+  arrivalAirport: AirportInfo
   departureLabel: string
   arrivalLabel: string
   onEdit: () => void
@@ -11,12 +14,19 @@ type Props = {
 
 export function DietCalendar({
   plan,
+  departureAirport,
+  arrivalAirport,
   departureLabel,
   arrivalLabel,
   onEdit,
 }: Props) {
   const originZone = plan.departureLocal.zoneName ?? 'UTC'
-  const destinationTz = `${plan.arrivalLocal.zoneName ?? 'UTC'}`
+  const breakfastTimes = formatBreakfastInBothZones(
+    plan.destinationBreakfast,
+    originZone,
+    departureAirport,
+    arrivalAirport,
+  )
 
   return (
     <div className={styles.calendar}>
@@ -43,11 +53,10 @@ export function DietCalendar({
           </p>
           <p className={styles.meta}>
             Break final fast:{' '}
-            <strong>
-              {plan.destinationBreakfast.toFormat('ccc, MMM d — h:mm a')}
-            </strong>{' '}
+            <strong>{breakfastTimes.destination}</strong>
+            {' · '}
             <span className={styles.tzHighlight}>
-              destination local time ({destinationTz})
+              {breakfastTimes.origin} (origin local)
             </span>
           </p>
           {plan.breakfastNote && (

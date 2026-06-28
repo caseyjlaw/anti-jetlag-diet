@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { ClockFace } from './ClockFace'
 import styles from './TimePicker.module.css'
 
@@ -26,16 +27,26 @@ function formatTime(hour: number, minute: number): string {
   return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
 }
 
-function displayTime(value: string): string {
-  if (!value) return 'Select time'
-  return value
+function normalizeTimeInput(raw: string): string | null {
+  const trimmed = raw.trim()
+  const match = trimmed.match(/^(\d{1,2}):(\d{1,2})$/)
+  if (!match) return null
+
+  const hour = Number.parseInt(match[1]!, 10)
+  const minute = Number.parseInt(match[2]!, 10)
+  if (hour > 23 || minute > 59) return null
+
+  return formatTime(hour, minute)
 }
 
 export function TimePicker({ id, label, value, onChange, required }: Props) {
   const panelId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
+  const controlRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const [panelOpen, setPanelOpen] = useState(false)
   const [mode, setMode] = useState<PickerMode>('hour')
+  const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({})
   const parsed = parseTime(value || '00:00')
   const [hour, setHour] = useState(parsed.hour)
   const [minute, setMinute] = useState(parsed.minute)
@@ -46,17 +57,65 @@ export function TimePicker({ id, label, value, onChange, required }: Props) {
     setMinute(next.minute)
   }, [value])
 
+  useLayoutEffect(() => {
+    if (!panelOpen || !controlRef.current || !panelRef.current) return
+
+    function updatePosition() {
+      const anchor = controlRef.current!.getBoundingClientRect()
+      const panelHeight = panelRef.current!.offsetHeight
+      const panelWidth = Math.max(anchor.width, 280)
+      const margin = 8
+      const spaceBelow = window.innerHeight - anchor.bottom - margin
+      const spaceAbove = anchor.top - margin
+      const openAbove = spaceBelow < panelHeight && spaceAbove > spaceBelow
+
+      let left = anchor.left
+      left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin))
+
+      setPanelStyle({
+        position: 'fixed',
+        left,
+        width: panelWidth,
+        top: openAbove
+          ? anchor.top - panelHeight - margin
+          : anchor.bottom + margin,
+        zIndex: 2000,
+      })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [panelOpen, mode, hour, minute])
+
   useEffect(() => {
     if (!panelOpen) return
 
     function handlePointerDown(event: MouseEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setPanelOpen(false)
+      const target = event.target as Node
+      if (
+        rootRef.current?.contains(target) ||
+        panelRef.current?.contains(target)
+      ) {
+        return
       }
+      setPanelOpen(false)
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setPanelOpen(false)
     }
 
     document.addEventListener('mousedown', handlePointerDown)
-    return () => document.removeEventListener('mousedown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
   }, [panelOpen])
 
   function openPicker() {
@@ -84,21 +143,78 @@ export function TimePicker({ id, label, value, onChange, required }: Props) {
     setPanelOpen(false)
   }
 
+  function handleTextBlur() {
+    if (!value.trim()) return
+    const normalized = normalizeTimeInput(value)
+    if (normalized) {
+      onChange(normalized)
+    }
+  }
+
+  const panel = panelOpen ? (
+    <div
+      id={panelId}
+      ref={panelRef}
+      className={styles.panel}
+      style={panelStyle}
+      role="dialog"
+      aria-label={`${label} picker`}
+    >
+      <p className={styles.digitalTime}>{formatTime(hour, minute)}</p>
+      <div className={styles.modeTabs}>
+        <button
+          type="button"
+          className={mode === 'hour' ? styles.modeActive : styles.modeTab}
+          onClick={() => setMode('hour')}
+        >
+          Hour
+        </button>
+        <button
+          type="button"
+          className={mode === 'minute' ? styles.modeActive : styles.modeTab}
+          onClick={() => setMode('minute')}
+        >
+          Minute
+        </button>
+      </div>
+      <p className={styles.modeHint}>
+        {mode === 'hour'
+          ? 'Click the clock face to set the hour (24-hour).'
+          : 'Click the clock face to set the minute.'}
+      </p>
+      <ClockFace
+        mode={mode}
+        hour={hour}
+        minute={minute}
+        onSelectHour={handleHourSelect}
+        onSelectMinute={handleMinuteSelect}
+      />
+      <button type="button" className={styles.doneButton} onClick={confirmPanel}>
+        Done
+      </button>
+    </div>
+  ) : null
+
   return (
     <div className={styles.field} ref={rootRef}>
       <label htmlFor={id}>{label}</label>
-      <div className={styles.control}>
-        <button
-          type="button"
+      <div className={styles.control} ref={controlRef}>
+        <input
           id={id}
-          className={`${styles.displayButton} ${!value ? styles.displayEmpty : ''}`}
-          onClick={openPicker}
+          type="text"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder="19:00"
+          required={required}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={handleTextBlur}
+          className={styles.textInput}
+          aria-describedby={`${id}-hint`}
           aria-expanded={panelOpen}
           aria-controls={panelId}
-          aria-describedby={`${id}-hint`}
-        >
-          {displayTime(value)}
-        </button>
+          pattern="[0-9]{2}:[0-9]{2}"
+        />
         <button
           type="button"
           className={styles.clockButton}
@@ -128,59 +244,10 @@ export function TimePicker({ id, label, value, onChange, required }: Props) {
         </button>
       </div>
 
-      <input
-        tabIndex={-1}
-        className={styles.hiddenInput}
-        value={value}
-        onChange={() => undefined}
-        required={required}
-        aria-hidden="true"
-      />
-
-      {panelOpen && (
-        <div
-          id={panelId}
-          className={styles.panel}
-          role="dialog"
-          aria-label={`${label} picker`}
-        >
-          <p className={styles.digitalTime}>{formatTime(hour, minute)}</p>
-          <div className={styles.modeTabs}>
-            <button
-              type="button"
-              className={mode === 'hour' ? styles.modeActive : styles.modeTab}
-              onClick={() => setMode('hour')}
-            >
-              Hour
-            </button>
-            <button
-              type="button"
-              className={mode === 'minute' ? styles.modeActive : styles.modeTab}
-              onClick={() => setMode('minute')}
-            >
-              Minute
-            </button>
-          </div>
-          <p className={styles.modeHint}>
-            {mode === 'hour'
-              ? 'Click the clock face to set the hour (24-hour).'
-              : 'Click the clock face to set the minute.'}
-          </p>
-          <ClockFace
-            mode={mode}
-            hour={hour}
-            minute={minute}
-            onSelectHour={handleHourSelect}
-            onSelectMinute={handleMinuteSelect}
-          />
-          <button type="button" className={styles.doneButton} onClick={confirmPanel}>
-            Done
-          </button>
-        </div>
-      )}
+      {panel && createPortal(panel, document.body)}
 
       <span id={`${id}-hint`} className={styles.hint}>
-        Click the time or clock icon to open the graphical picker.
+        Type HH:MM (24-hour) or use the clock icon.
       </span>
     </div>
   )

@@ -33,6 +33,11 @@ function App() {
 
   return (
     <div className="app">
+      <div className="pageMotifs" aria-hidden="true">
+        <div className="pageMotifStar" />
+        <div className="pageMotifPlane" />
+      </div>
+
       <section className="hero" aria-label="Diet calculator">
         <div className="heroStage">
           <div
@@ -57,6 +62,8 @@ function App() {
             {showCalendar && (
               <DietCalendar
                 plan={plan}
+                departureAirport={formValues.departureAirport}
+                arrivalAirport={formValues.arrivalAirport}
                 departureLabel={formatAirportLabel(formValues.departureAirport)}
                 arrivalLabel={formatAirportLabel(formValues.arrivalAirport)}
                 onEdit={handleEdit}

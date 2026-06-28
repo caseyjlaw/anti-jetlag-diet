@@ -4,6 +4,7 @@
   gap: 1.25rem;
   max-width: 40rem;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .header h1 {
@@ -41,6 +42,7 @@
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   background: var(--color-card);
+  overflow: visible;
 }
 
 .fieldset legend {

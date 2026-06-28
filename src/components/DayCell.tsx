@@ -45,9 +45,7 @@ export function DayCell({ day, timezone }: Props) {
             >
               <span>{event.label}</span>
               {event.timezoneNote && (
-                <span className={styles.tzNote}>
-                  Time zone: {event.timezoneNote}
-                </span>
+                <span className={styles.tzNote}>{event.timezoneNote}</span>
               )}
             </li>
           ))}

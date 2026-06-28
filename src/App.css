@@ -1,28 +1,50 @@
 .app {
   min-height: 100vh;
+  position: relative;
+}
+
+.pageMotifs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.pageMotifStar {
+  position: absolute;
+  left: 10%;
+  top: 14%;
+  width: min(140px, 22vw);
+  aspect-ratio: 1;
+  background: url('./assets/star-motif.svg') center / contain no-repeat;
+}
+
+.pageMotifPlane {
+  position: absolute;
+  left: 86%;
+  top: 20%;
+  width: min(200px, 32vw);
+  aspect-ratio: 2 / 1;
+  transform: translateX(-50%);
+  background: url('./assets/plane-side.svg') center / contain no-repeat;
 }
 
 .hero {
   position: relative;
+  z-index: 1;
   min-height: min(100vh, 920px);
   padding: 2rem 1.25rem 3rem;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   background:
-    url('./assets/star-motif.svg') no-repeat 10% 14% / min(140px, 22vw),
-    url('./assets/plane-side.svg') no-repeat 86% 20% / min(200px, 32vw),
     radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.12), transparent 40%),
     radial-gradient(circle at 85% 10%, rgba(45, 212, 191, 0.08), transparent 35%),
     linear-gradient(180deg, #0b1220 0%, #101a2e 55%, #0b1220 100%);
 }
 
-.hero::before,
-.hero::after {
-  content: none;
-}
-
 .heroStage {
   position: relative;
-  z-index: 1;
   min-height: 32rem;
 }
 
@@ -64,8 +86,9 @@
 }
 
 .content {
+  position: relative;
+  z-index: 1;
   padding: 0 1.25rem 2rem;
-  background: var(--color-bg);
 }
 
 .formError {
