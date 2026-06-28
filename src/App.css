@@ -1,0 +1,64 @@
+.app {
+  min-height: 100vh;
+}
+
+.hero {
+  min-height: min(100vh, 920px);
+  padding: 2rem 1.25rem 3rem;
+  background:
+    linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+.heroStage {
+  position: relative;
+  min-height: 32rem;
+}
+
+.panel {
+  transition:
+    transform 0.45s ease,
+    opacity 0.45s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: none;
+  }
+}
+
+.calculatorPanel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.calendarPanel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  pointer-events: none;
+}
+
+.panelHidden {
+  opacity: 0;
+  transform: translateY(-1.5rem);
+  pointer-events: none;
+}
+
+.panelVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.content {
+  padding: 0 1.25rem 2rem;
+  background: #fff;
+}
+
+.formError {
+  max-width: 40rem;
+  margin: 1rem auto 0;
+  color: #b42318;
+  text-align: center;
+}
