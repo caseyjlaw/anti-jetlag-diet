@@ -32,7 +32,7 @@ export function DietCalendar({
     <div className={styles.calendar}>
       <header className={styles.header}>
         <div>
-          <h2>Your 5-day diet plan</h2>
+          <h2>Your 4-day diet plan</h2>
           <p className={styles.route}>
             {departureLabel} → {arrivalLabel}
           </p>

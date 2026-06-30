@@ -45,7 +45,7 @@ export type DietPlan = {
   breakfastNote?: string
 }
 
-const DAY_TYPES: DayType[] = ['feast', 'fast', 'feast', 'fast', 'travel']
+const DAY_TYPES: DayType[] = ['feast', 'fast', 'feast', 'travel']
 
 function parseLocalDateTime(
   date: string,
@@ -211,7 +211,7 @@ export function computeDietPlan(input: TripInput): DietPlan {
 
   const originZone = input.departureAirport.timezone
   const days: DietDay[] = DAY_TYPES.map((dayType, index) => {
-    const offset = index - 4
+    const offset = index - (DAY_TYPES.length - 1)
     const dayDate = departureLocal.plus({ days: offset }).setZone(originZone)
     const date = dayDate.toISODate()!
     const events =

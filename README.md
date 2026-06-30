@@ -7,7 +7,7 @@ Interactive calculator and reference site for the [Argonne Anti-Jet-Lag Diet](ht
 ## Features
 
 - Enter departure and arrival airports plus local departure/arrival times from your reservation email
-- Generates a 5-day feast/fast/travel plan ending on your departure day
+- Generates a 4-day feast/fast/travel plan ending with a fast on your departure day
 - Calendar highlights meals, caffeine windows, and destination breakfast (07:00 local)
 - Educational content adapted from public sources (see Sources below)
 

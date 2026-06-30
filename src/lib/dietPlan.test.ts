@@ -39,15 +39,15 @@ describe('computeDietPlan', () => {
 
     expect(plan.direction).toBe('east')
     expect(plan.travelDate).toBe('2026-01-11')
-    expect(plan.days).toHaveLength(5)
+    expect(plan.days).toHaveLength(4)
     expect(plan.days[0].events).toHaveLength(1)
     expect(plan.days[0].events[0].label).toContain('Feast')
-    expect(plan.days[4].dayType).toBe('travel')
+    expect(plan.days[3].dayType).toBe('travel')
     expect(
       plan.destinationBreakfast.toFormat('yyyy-MM-dd HH:mm'),
     ).toBe('2026-01-12 07:00')
-    expect(plan.days[4].events.some((e) => e.kind === 'break-fast')).toBe(true)
-    const breakFast = plan.days[4].events.find((e) => e.kind === 'break-fast')
+    expect(plan.days[3].events.some((e) => e.kind === 'break-fast')).toBe(true)
+    const breakFast = plan.days[3].events.find((e) => e.kind === 'break-fast')
     expect(breakFast?.timezoneNote).toContain('CDG local')
     expect(breakFast?.timezoneNote).toContain('JFK local')
     expect(breakFast?.timezoneNote).toContain('Destination:')
@@ -55,7 +55,7 @@ describe('computeDietPlan', () => {
     expect(breakFast?.timezoneNote).toContain('Jan 12 — 7:00 AM')
     expect(breakFast?.timezoneNote).toContain('Jan 12 — 1:00 AM')
     expect(
-      plan.days[4].events.some((e) =>
+      plan.days[3].events.some((e) =>
         e.label.includes('6–11 PM'),
       ),
     ).toBe(true)
@@ -74,7 +74,7 @@ describe('computeDietPlan', () => {
     expect(plan.direction).toBe('west')
     expect(plan.travelDate).toBe('2026-02-02')
     expect(
-      plan.days[4].events.some((e) =>
+      plan.days[3].events.some((e) =>
         e.label.includes('morning before departure'),
       ),
     ).toBe(true)
@@ -91,7 +91,7 @@ describe('computeDietPlan', () => {
     })
 
     expect(plan.travelDate).toBe('2026-03-15')
-    expect(plan.days[4].date).toBe('2026-03-15')
+    expect(plan.days[3].date).toBe('2026-03-15')
     expect(
       plan.destinationBreakfast.toFormat('yyyy-MM-dd'),
     ).toBe('2026-03-15')
